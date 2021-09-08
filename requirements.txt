@@ -26,7 +26,6 @@ h5py==3.1.0
 idna==3.2
 imageio==2.9.0
 imageio-ffmpeg==0.4.5
-ipython==7.27.0
 itsdangerous==2.0.1
 jedi==0.18.0
 Jinja2==3.0.1
