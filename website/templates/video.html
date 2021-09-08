@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}
+Video
+{% endblock %}
+
+{% block content %}
+
+{% if page == 2 %}
+<p>
+<h2>Your video</h2>
+</p>
+<p>
+	<video width="640" height="480" autoplay="autoplay" controls="controls">
+			<source src="{{ url_for('views.video_stream', video_path=video_path) }}" type="video/mp4">
+			Your browser does not support the video tag.
+	</video>
+</p>
+{% endif %}
+
+<form method="post" action="/video" enctype="multipart/form-data">
+		<p>
+			<input type="file" name="file" autocomplete="off" required=True accept="video/mp4">
+		</p>
+		<p>
+			<label for="ticketNum">Time maximum in seconds (optionnal):</label>
+			<input id="seconds_max" type="number" name="seconds_max" list="defaultNumbers" min=1>
+			<span class="validity"></span>
+			<datalist id="defaultNumbers">
+				<option value="10"/>
+				<option value="20"/>
+				<option value="30"/>
+				<option value="60"/>
+				<option value="120"/>
+			</datalist>
+		</p>
+		<p>
+			<p><h3>Preprocess</h3></p>
+			<label><input type="checkbox" class="radio" value="edge" name="preprocess" checked=True/>Edge</label>
+			<label><input type="checkbox" class="radio" value="contours" name="preprocess"/>Contours</label>
+			<label><input type="checkbox" class="radio" value="snap_filter" name="preprocess"/>Snap Filter</label>
+		</p>
+		<p>
+			<input type="submit" value="Preprocess">
+		</p>
+</form>
+
+{% endblock %}

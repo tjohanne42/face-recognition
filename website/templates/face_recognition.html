@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}
+Show image
+{% endblock %}
+
+{% block content %}
+{% if page == 1 %}
+<p>Enter a picture :</p>
+<form action="http://localhost:5000/face-recognition" method="POST", enctype="multipart/form-data">
+    <dl><p><input type="file" name="pic" autocomplete="off" required=True accept=".jpeg,.png"></p></dl>
+    <p><input type="submit" value="Face recognition"></p>
+</form>
+{% elif page == 2 %}
+	<img src="data:;base64,{{ drawn_img }}" alt="drawn_img"/>
+	{% for img in crop_img %}
+		<img src="data:;base64,{{ img }}" alt="crop_img"/>
+	{% endfor %}
+{% else%}
+	<h1>You not supposed to be here</h1>
+{% endif %}
+{% endblock %}
