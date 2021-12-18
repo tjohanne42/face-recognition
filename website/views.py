@@ -235,13 +235,18 @@ def transparentOverlay(src, overlay, pos=(0, 0), scale=1):
 			src[x + i][y + j] = alpha * overlay[i][j][:3] + (1 - alpha) * src[x + i][y + j]
 	return src
 
-def cv2_snap_filter(frame):
-	face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+def cv2_snap_filter(frame, detection_model="opencv"):
 	specs_ori = cv2.imread('glass.png', -1)
 	cigar_ori = cv2.imread('cigar.png', -1)
 	mus_ori = cv2.imread('mustache.png', -1)
-	gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-	faces = face_cascade.detectMultiScale(frame, 1.2, 5, 0, (120, 120), (350, 350))
+	if detection_model == "opencv":
+		# faces = face_cascade.detectMultiScale(frame, 1.2, 5, 0, (120, 120), (350, 350))
+		face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+		faces = face_cascade.detectMultiScale(frame, minNeighbors=10)
+	elif detection_model == "retinaface":
+		faces = RetinaFace.detect_faces(frame)
+	elif detection_model == "face_recognition":
+		faces = face_recognition.face_locations(img)
 	for (x, y, w, h) in faces:
 		if h > 0 and w > 0:
 			glass_symin = int(y + 1.5 * h / 5)
